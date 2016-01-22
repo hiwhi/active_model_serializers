@@ -21,7 +21,10 @@ module ActiveModel
 
       def parsed_fields
         if raw_fields.is_a?(Hash)
-          raw_fields.each_with_object({}) { |(k, v), h| h[k.to_sym] = v.map(&:to_sym) }
+          raw_fields.each_with_object({}) do |(k, v), h|
+            v = v.split(",") if v.is_a?(String)
+            h[k.to_sym] = v.map(&:to_sym)
+          end
         else
           {}
         end
